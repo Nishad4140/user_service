@@ -67,6 +67,56 @@ func (u *UserService) UserSignUp(ctx context.Context, req *pb.UserSignUpRequest)
 	}, nil
 }
 
+func (u *UserService) UserLogin(ctx context.Context, req *pb.LoginRequest) (*pb.UserResponse, error) {
+	res, err := u.Adapter.UserLogin(req.Email)
+	if err != nil {
+		return nil, fmt.Errorf("there is no such user")
+	}
+
+	if err := helper.VerifyPassword(res.Password, req.Password); err != nil {
+		return nil, fmt.Errorf("wrong password")
+	}
+
+	return &pb.UserResponse{
+		Id:    uint32(res.Id),
+		Name:  res.Name,
+		Email: res.Email,
+	}, nil
+}
+
+func (u *UserService) AdminLogin(ctx context.Context, req *pb.LoginRequest) (*pb.UserResponse, error) {
+	res, err := u.Adapter.AdminLogin(req.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := helper.VerifyPassword(res.Password, req.Password); err != nil {
+		return nil, err
+	}
+
+	return &pb.UserResponse{
+		Id:    uint32(res.Id),
+		Name:  res.Name,
+		Email: res.Email,
+	}, nil
+}
+
+func (u *UserService) SupAdminLogin(ctx context.Context, req *pb.LoginRequest) (*pb.UserResponse, error) {
+	res, err := u.Adapter.SupAdminLogin(req.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := helper.VerifyPassword(res.Password, req.Password); err != nil {
+		return nil, err
+	}
+	return &pb.UserResponse{
+		Id:    uint32(res.Id),
+		Name:  res.Name,
+		Email: res.Email,
+	}, nil
+}
+
 type HealthChecker struct {
 	grpc_health_v1.UnimplementedHealthServer
 }

@@ -3,7 +3,7 @@ module github.com/Nishad4140/user_service
 go 1.21.0
 
 require (
-	github.com/Nishad4140/proto_files v0.0.0-20240208145228-c295c34927b0
+	github.com/Nishad4140/proto_files v0.0.0-20240209061858-01f78ccd3f45
 	github.com/hashicorp/consul/api v1.27.0
 	github.com/joho/godotenv v1.5.1
 	github.com/opentracing/opentracing-go v1.2.0
