@@ -9,6 +9,9 @@ import (
 	"github.com/Nishad4140/user_service/entities"
 	"github.com/Nishad4140/user_service/helper"
 	"github.com/opentracing/opentracing-go"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/health/grpc_health_v1"
+	"google.golang.org/grpc/status"
 )
 
 var (
@@ -62,4 +65,19 @@ func (u *UserService) UserSignUp(ctx context.Context, req *pb.UserSignUpRequest)
 		Name:  res.Name,
 		Email: res.Email,
 	}, nil
+}
+
+type HealthChecker struct {
+	grpc_health_v1.UnimplementedHealthServer
+}
+
+func (s *HealthChecker) Check(ctx context.Context, in *grpc_health_v1.HealthCheckRequest) (*grpc_health_v1.HealthCheckResponse, error) {
+	fmt.Println("check called")
+	return &grpc_health_v1.HealthCheckResponse{
+		Status: grpc_health_v1.HealthCheckResponse_SERVING,
+	}, nil
+}
+
+func (s *HealthChecker) Watch(in *grpc_health_v1.HealthCheckRequest, srv grpc_health_v1.Health_WatchServer) error {
+	return status.Error(codes.Unimplemented, "Watching is not supported")
 }
