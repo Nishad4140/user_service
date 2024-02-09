@@ -7,5 +7,7 @@ type UserInterface interface {
 	UserLogin(email string) (entities.User, error)
 	AdminLogin(email string) (entities.Admin, error)
 	SupAdminLogin(email string) (entities.SuAdmin, error)
-	// AddAdmin(req entities.Admin) (entities.Admin, error)
+	AddAdmin(req entities.Admin) (entities.Admin, error)
+	GetAllAdmins() ([]entities.Admin, error)
+	GetAllUsers() ([]entities.User, error)
 }
